@@ -1,0 +1,27 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build APK
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: build
+        with:
+          workdir: FB_AutoComment_GitHub
+          command: buildozer android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: FB_AutoComment_GitHub/bin/*.apk
